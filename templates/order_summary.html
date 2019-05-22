@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container pt-5">
+
+    <h2>Order Summary</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order_item in object.items.all %}
+
+            <tr>
+                <th scope="col">{{forloop.counter}}</th>
+                <th scope="row">{{order_item.item.title}}</th>
+                <td>
+                    {% if order_item.item.discount_price %}
+                    {{order_item.item.discount_price}}
+                    {% else %}
+                    {{order_item.item.price}}
+                    {% endif %}
+
+                </td>
+                <td>{{order_item.quantity}}</td>
+                <td>
+
+                    {% if order_item.item.discount_price %}
+                    {{order_item.get_total_discount_price}}
+                    {% else %}
+                    {{order_item.get_total_price}}
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% endfor %}
+            <tr>
+                <th scope="col" colspan="4"><b>Total Order Price</b></th>
+                <th scope="col"><b>{{object.get_full_price}} TL</b></th>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+</div>
+{% endblock  %}
